@@ -142,11 +142,15 @@
     <ClCompile Include="board.cpp" />
     <ClCompile Include="errorCheck.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="miniMax.cpp" />
+    <ClCompile Include="node.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="display.h" />
     <ClInclude Include="board.h" />
     <ClInclude Include="errorCheck.h" />
+    <ClInclude Include="miniMax.h" />
+    <ClInclude Include="node.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

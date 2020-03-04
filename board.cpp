@@ -80,10 +80,12 @@ Player CBoard::GetWinner()
 		
 		if ((m_pGrid[i][0] == X and m_pGrid[i][1] == X and m_pGrid[i][2] == X) or (m_pGrid[0][i] == X and m_pGrid[1][i] == X and m_pGrid[2][i] == X))
 		{
+			m_pWinner = X;
 			return X;
 		}
 		else if ((m_pGrid[i][0] == O and m_pGrid[i][1] == O and m_pGrid[i][2] == O) or (m_pGrid[0][i] == O and m_pGrid[1][i] == O and m_pGrid[2][i] == O))
 		{
+			m_pWinner = O;
 			return O;
 		}
 	}
@@ -91,16 +93,33 @@ Player CBoard::GetWinner()
 	// Checks for Diagonals 
 	if ((m_pGrid[0][2] == X and m_pGrid[1][1] == X and m_pGrid[2][0] == X) or (m_pGrid[0][0] == X and m_pGrid[1][1] == X and m_pGrid[2][2] == X))
 	{
+		m_pWinner = X;
 		return X;
 	}
 	else if ((m_pGrid[0][2] == O and m_pGrid[1][1] == O and m_pGrid[2][0] == O) or (m_pGrid[0][0] == O and m_pGrid[1][1] == O and m_pGrid[2][2] == O))
 	{
+		m_pWinner = O;
 		return O;
 	}
 
 
+	// Checks for no win
+	for (int i = 0; i < 3; ++i)
+	{
+		for (int j = 0; j < 3; ++j)
+		{
+			if (m_pGrid[i][j] == Blank)
+			{
+				return null;
+			}
+		}
+	}
 
-	return null;
+
+	// Returns no win
+	m_pWinner = Blank;
+	return Blank;
+	
 }
 
 
