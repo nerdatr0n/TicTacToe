@@ -25,17 +25,16 @@ public:
 	CNode(Player _mGrid[3][3], Player _pPlayerTurn, Vect2 _vturnPosition);
 	~CNode();
 
-
-
-
-	string GetNodeName();
+	int GetHeuristic();
+	Vect2 GetTurnPosition();
 	
-
-
 private:
 
-	bool checkGameOver();
+	char PlayerEnumToChar(Player _pEnum);
 
+	Player checkGameOver();
+
+	int m_iNodeHeuristic;
 
 	Player m_pGrid[3][3];
 	
@@ -44,7 +43,7 @@ private:
 
 
 
-	vector<CNode*> m_pAdjcentNodes;
+	vector<CNode*> m_pChildNodes;
 
 
 };

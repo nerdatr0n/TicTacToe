@@ -1,5 +1,7 @@
 
 
+
+
 #include "node.h"
 
 CNode::CNode(Player _mGrid[3][3], Player _pPlayerTurn, Vect2 _vturnPosition)
@@ -14,7 +16,7 @@ CNode::CNode(Player _mGrid[3][3], Player _pPlayerTurn, Vect2 _vturnPosition)
 			m_pGrid[i][j] = _mGrid[i][j];
 		}
 	}
-
+	
 	m_pPlayerTurn = _pPlayerTurn;
 	m_vturnPosition = _vturnPosition;
 
@@ -23,23 +25,44 @@ CNode::CNode(Player _mGrid[3][3], Player _pPlayerTurn, Vect2 _vturnPosition)
 	m_pGrid[m_vturnPosition.x][m_vturnPosition.y] = m_pPlayerTurn;
 
 
-	// What its going to make the next nodes
-	Player pNextTurn;
-	if (m_pPlayerTurn == X)
+
+
+
+	// is leaf Node
+	if (checkGameOver() == null)
 	{
-		pNextTurn = O;
+		// For ai win
+		if (checkGameOver() == O)
+		{
+			m_iNodeHeuristic = 1;
+		}
+		// For player win
+		else if (checkGameOver() == O)
+		{
+			m_iNodeHeuristic = -1;
+		}
+		// For tie
+		else 
+		{
+			m_iNodeHeuristic = 0;
+		}
 	}
-	else
+	else // Has leaf nodes
 	{
-		pNextTurn = X;
-	}
+
+		// What its going to make the next nodes
+		Player NextTurn;
+		if (m_pPlayerTurn == X)
+		{
+			NextTurn = O;
+		}
+		else
+		{
+			NextTurn = X;
+		}
 
 
-
-	// Checks to see if its an end node
-	if (!checkGameOver())
-	{
-		// Checks for no win
+		// Makes all the nodes
 		for (int i = 0; i < 3; ++i)
 		{
 			for (int j = 0; j < 3; ++j)
@@ -51,18 +74,55 @@ CNode::CNode(Player _mGrid[3][3], Player _pPlayerTurn, Vect2 _vturnPosition)
 					Vect2 vNewTurn;
 					
 					vNewTurn.x = i;
-					vNewTurn.y = i;
+					vNewTurn.y = j;
 
-					CNode cNewNode(m_pGrid, m_pPlayerTurn, m_vturnPosition);
+					CNode* cNewNode = new CNode(m_pGrid, NextTurn, vNewTurn);
 
-					//m_pAdjcentNodes.push_back(cNewNode);
+					m_pChildNodes.push_back(cNewNode);
 
+				}
+			}
+		}
+
+
+		
+
+		// Max
+		if (NextTurn == O)
+		{
+			m_iNodeHeuristic = -INFINITY;
+
+			// Gets heuristic from child nodes
+			for (int i = 0; i < m_pChildNodes.size(); i++) 
+			{
+				if (m_pChildNodes[i]->GetHeuristic() > m_iNodeHeuristic)
+				{
+					m_iNodeHeuristic = m_pChildNodes[i]->GetHeuristic();
+				}
+			}
+
+
+		}
+		// Min
+		else
+		{
+			m_iNodeHeuristic = INFINITY;
+
+			// Gets heuristic from child nodes
+			for (int i = 0; i < m_pChildNodes.size(); i++)
+			{
+				if (m_pChildNodes[i]->GetHeuristic() < m_iNodeHeuristic)
+				{
+					m_iNodeHeuristic = m_pChildNodes[i]->GetHeuristic();
 				}
 			}
 		}
 
 		
 	}
+
+
+
 }
 
 CNode::~CNode()
@@ -70,9 +130,33 @@ CNode::~CNode()
 
 }
 
+int CNode::GetHeuristic()
+{
+	return m_iNodeHeuristic;
+}
+
+Vect2 CNode::GetTurnPosition()
+{
+	return m_vturnPosition;
+}
 
 
-bool CNode::checkGameOver()
+
+char CNode::PlayerEnumToChar(Player _pEnum)
+{
+	if (_pEnum == X)
+	{
+		return 'X';
+	}
+	else if (_pEnum == O)
+	{
+		return 'O';
+	}
+
+	return ' ';
+}
+
+Player CNode::checkGameOver()
 {
 
 	// iterates through all columns and rows
@@ -81,22 +165,22 @@ bool CNode::checkGameOver()
 
 		if ((m_pGrid[i][0] == X and m_pGrid[i][1] == X and m_pGrid[i][2] == X) or (m_pGrid[0][i] == X and m_pGrid[1][i] == X and m_pGrid[2][i] == X))
 		{
-			return true;
+			return X;
 		}
 		else if ((m_pGrid[i][0] == O and m_pGrid[i][1] == O and m_pGrid[i][2] == O) or (m_pGrid[0][i] == O and m_pGrid[1][i] == O and m_pGrid[2][i] == O))
 		{
-			return true;
+			return O;
 		}
 	}
 
 	// Checks for Diagonals 
 	if ((m_pGrid[0][2] == X and m_pGrid[1][1] == X and m_pGrid[2][0] == X) or (m_pGrid[0][0] == X and m_pGrid[1][1] == X and m_pGrid[2][2] == X))
 	{
-		return true;
+		return X;
 	}
 	else if ((m_pGrid[0][2] == O and m_pGrid[1][1] == O and m_pGrid[2][0] == O) or (m_pGrid[0][0] == O and m_pGrid[1][1] == O and m_pGrid[2][2] == O))
 	{
-		return true;
+		return O;
 	}
 
 
@@ -107,14 +191,13 @@ bool CNode::checkGameOver()
 		{
 			if (m_pGrid[i][j] == Blank)
 			{
-				return true;
+				return null;
 			}
 		}
 	}
 
 
 	// Returns no win
-	return true;
-
+	return Blank;
 }
 

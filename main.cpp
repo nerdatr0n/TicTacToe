@@ -27,6 +27,7 @@
 #include "board.h"
 #include "errorCheck.h"
 #include "node.h"
+#include "miniMax.h"
 
 using namespace std;
 
@@ -196,28 +197,91 @@ void PlayerVsAiHard(CBoard _board)
 
 	Vect2 GridPosition;
 
-	Player m_pGrid[3][3];
+	_board.ResetBoard();
 
-	// Copping the array
-	for (int i = 0; i < 3; ++i)
+
+	while (_board.GetWinner() == null)
 	{
-		for (int j = 0; j < 3; ++j)
+		// Players turn
+		while (_board.GetTurn() == X)
 		{
-			m_pGrid[i][j] = Blank;
+			DisplayHeader();
+			_board.DisplayBoard();
+			cout << endl << "	Current Turn: " << _board.PlayerEnumToChar(_board.GetTurn()) << endl;
+			cout << "	Please input your turn seperated by a ','" << endl;
+
+			// Gets and clears the input
+			cin.clear();
+			//cin.ignore(9999999, '\n');
+			getline(cin, strCoordInputs);
+
+
+
+			DisplayHeader();
+			while (!CheckStringCoords(strCoordInputs))
+			{
+				DisplayHeader();
+				_board.DisplayBoard();
+				cout << endl << "	Current Turn: " << _board.PlayerEnumToChar(_board.GetTurn()) << endl;
+				cout << "	Please input your turn seperated by a ',' - ERROR Please enter a valid input" << endl;
+
+				cin.clear();
+				//cin.ignore(9999999, '\n');
+				getline(cin, strCoordInputs);
+
+
+			}
+
+			GridPosition = StringToVector(strCoordInputs);
+
+
+			_board.HaveTurn(GridPosition);
+		}
+
+		// Breaks if the player wins
+		if (_board.GetWinner() != null)
+		{
+			break;
+		}
+
+		// Ai Turn
+		while (_board.GetTurn() == O)
+		{
+			CMiniMax AI();
+
+			AI.GetBestMove()
+
+			GridPosition.x = (rand() % 3);
+			GridPosition.y = (rand() % 3);
+			while (_board.GetSpace(GridPosition) != Blank)
+			{
+				GridPosition.x = (rand() % 3);
+				GridPosition.y = (rand() % 3);
+			}
+			_board.HaveTurn(GridPosition);
 		}
 	}
 
 
-	Vect2 vNewTurn;
 
-	vNewTurn.x = 0;
-	vNewTurn.y = 0;
+	// Shows the winner things
+	if (_board.GetWinner() == Blank)
+	{
+		DisplayHeader();
+		_board.DisplayBoard();
+		cout << endl << "	The game is a tie" << endl;
+		cout << endl << "	Press enter to continue " << endl;
+	}
+	else
+	{
+		DisplayHeader();
+		_board.DisplayBoard();
+		cout << endl << "	The winner is " << _board.PlayerEnumToChar(_board.GetWinner()) << endl;
+		cout << endl << "	Press enter to continue " << endl;
+	}
 
-	CNode TESTNODE(m_pGrid, X, vNewTurn);
 
 
-	DisplayHeader();
-	cout << "Done" << endl;
 
 	cin.clear();
 	//cin.ignore(9999999, '\n');
