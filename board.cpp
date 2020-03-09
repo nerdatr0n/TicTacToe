@@ -33,7 +33,7 @@ CBoard::CBoard()
 	}
 
 
-	m_pWinner = null;
+	m_pWinner = None;
 	m_pCurrentPlayer = X;
 }
 
@@ -55,7 +55,7 @@ void CBoard::ResetBoard()
 	}
 
 
-	m_pWinner = null;
+	m_pWinner = None;
 	m_pCurrentPlayer = X;
 }
 
@@ -66,10 +66,10 @@ bool CBoard::GetEnded()
 }
 
 
-Player CBoard::GetWinner()
+Winner CBoard::GetWinner()
 {
 	// Avoids unnessacery actions
-	if (m_pWinner != null)
+	if (m_pWinner != None)
 	{
 		return m_pWinner;
 	}
@@ -80,26 +80,26 @@ Player CBoard::GetWinner()
 		
 		if ((m_pGrid[i][0] == X and m_pGrid[i][1] == X and m_pGrid[i][2] == X) or (m_pGrid[0][i] == X and m_pGrid[1][i] == X and m_pGrid[2][i] == X))
 		{
-			m_pWinner = X;
-			return X;
+			m_pWinner = X_Winner;
+			return X_Winner;
 		}
 		else if ((m_pGrid[i][0] == O and m_pGrid[i][1] == O and m_pGrid[i][2] == O) or (m_pGrid[0][i] == O and m_pGrid[1][i] == O and m_pGrid[2][i] == O))
 		{
-			m_pWinner = O;
-			return O;
+			m_pWinner = O_Winner;
+			return O_Winner;
 		}
 	}
 
 	// Checks for Diagonals 
 	if ((m_pGrid[0][2] == X and m_pGrid[1][1] == X and m_pGrid[2][0] == X) or (m_pGrid[0][0] == X and m_pGrid[1][1] == X and m_pGrid[2][2] == X))
 	{
-		m_pWinner = X;
-		return X;
+		m_pWinner = X_Winner;
+		return X_Winner;
 	}
 	else if ((m_pGrid[0][2] == O and m_pGrid[1][1] == O and m_pGrid[2][0] == O) or (m_pGrid[0][0] == O and m_pGrid[1][1] == O and m_pGrid[2][2] == O))
 	{
-		m_pWinner = O;
-		return O;
+		m_pWinner = O_Winner;
+		return O_Winner;
 	}
 
 
@@ -110,15 +110,15 @@ Player CBoard::GetWinner()
 		{
 			if (m_pGrid[i][j] == Blank)
 			{
-				return null;
+				return None;
 			}
 		}
 	}
 
 
 	// Returns no win
-	m_pWinner = Blank;
-	return Blank;
+	m_pWinner = Tie;
+	return Tie;
 	
 }
 
@@ -197,6 +197,31 @@ char CBoard::PlayerEnumToChar(Player _pEnum)
 	}
 
 	return ' ';
+}
+
+char CBoard::WinnerEnumToChar(Winner _pEnum)
+{
+	if (_pEnum == X_Winner)
+	{
+		return 'X';
+	}
+	else if (_pEnum == O_Winner)
+	{
+		return 'O';
+	}
+
+	return ' ';
+}
+
+void CBoard::CopyBoard(Player _pBoard[3][3])
+{
+	for (int i = 0; i < 3; ++i)
+	{
+		for (int j = 0; j < 3; ++j)
+		{
+			_pBoard[i][j] = m_pGrid[i][j];
+		}
+	}
 }
 
 Vect2 StringToVector(string _strCoordInputs)

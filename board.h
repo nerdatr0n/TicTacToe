@@ -24,6 +24,14 @@ enum Player
 	null
 };
 
+enum Winner
+{
+	None,
+	X_Winner,
+	O_Winner,
+	Tie
+};
+
 struct Vect2
 {
 	int x;
@@ -45,7 +53,7 @@ public:
 
 	void ResetBoard();
 	bool GetEnded();
-	Player GetWinner();
+	Winner GetWinner();
 
 	Player GetSpace(Vect2 _vPoint);
 	bool HaveTurn(Vect2 _vPoint);
@@ -55,13 +63,16 @@ public:
 	Player GetTurn();
 
 	char PlayerEnumToChar(Player _pEnum);
+	char WinnerEnumToChar(Winner _pEnum);
+
+	void CopyBoard(Player _pBoard[3][3]);
 
 private: 
 
 	
 
 	Player m_pGrid[3][3];
-	Player m_pWinner;
+	Winner m_pWinner;
 	Player m_pCurrentPlayer;
 
 

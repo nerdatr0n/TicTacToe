@@ -17,7 +17,7 @@ CMiniMax::CMiniMax(Player _mGrid[3][3], Player _pPlayerTurn)
 	}
 
 	// Makes all the nodes
-	if (checkGameOver() != null)
+	if (checkGameOver() == None)
 	{
 		for (int i = 0; i < 3; ++i)
 		{
@@ -48,7 +48,10 @@ CMiniMax::CMiniMax(Player _mGrid[3][3], Player _pPlayerTurn)
 
 CMiniMax::~CMiniMax()
 {
-
+	//for (int i = 0; i < static_cast<int>(m_pChildNodes.size()); i++)
+	//{
+	//	delete m_pChildNodes[i];
+	//}
 }
 
 
@@ -71,7 +74,7 @@ Vect2 CMiniMax::GetBestMove()
 
 
 
-Player CMiniMax::checkGameOver()
+Winner CMiniMax::checkGameOver()
 {
 	// iterates through all columns and rows
 	for (int i = 0; i < 3; ++i)
@@ -79,22 +82,22 @@ Player CMiniMax::checkGameOver()
 
 		if ((m_pGrid[i][0] == X and m_pGrid[i][1] == X and m_pGrid[i][2] == X) or (m_pGrid[0][i] == X and m_pGrid[1][i] == X and m_pGrid[2][i] == X))
 		{
-			return X;
+			return X_Winner;
 		}
 		else if ((m_pGrid[i][0] == O and m_pGrid[i][1] == O and m_pGrid[i][2] == O) or (m_pGrid[0][i] == O and m_pGrid[1][i] == O and m_pGrid[2][i] == O))
 		{
-			return O;
+			return O_Winner;
 		}
 	}
 
 	// Checks for Diagonals 
 	if ((m_pGrid[0][2] == X and m_pGrid[1][1] == X and m_pGrid[2][0] == X) or (m_pGrid[0][0] == X and m_pGrid[1][1] == X and m_pGrid[2][2] == X))
 	{
-		return X;
+		return X_Winner;
 	}
 	else if ((m_pGrid[0][2] == O and m_pGrid[1][1] == O and m_pGrid[2][0] == O) or (m_pGrid[0][0] == O and m_pGrid[1][1] == O and m_pGrid[2][2] == O))
 	{
-		return O;
+		return O_Winner;
 	}
 
 
@@ -105,12 +108,13 @@ Player CMiniMax::checkGameOver()
 		{
 			if (m_pGrid[i][j] == Blank)
 			{
-				return null;
+				// No Winner
+				return None;
 			}
 		}
 	}
 
 
-	// Returns no win
-	return Blank;
+	// Returns Tie
+	return Tie;
 }

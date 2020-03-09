@@ -37,7 +37,7 @@ public:
 
 private:
 
-	Player checkGameOver();
+	Winner checkGameOver();
 
 
 	Player m_pGrid[3][3];

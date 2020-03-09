@@ -29,15 +29,15 @@ CNode::CNode(Player _mGrid[3][3], Player _pPlayerTurn, Vect2 _vturnPosition)
 
 
 	// is leaf Node
-	if (checkGameOver() == null)
+	if (checkGameOver() != None)
 	{
 		// For ai win
-		if (checkGameOver() == O)
+		if (checkGameOver() == O_Winner)
 		{
 			m_iNodeHeuristic = 1;
 		}
 		// For player win
-		else if (checkGameOver() == O)
+		else if (checkGameOver() == X_Winner)
 		{
 			m_iNodeHeuristic = -1;
 		}
@@ -86,9 +86,9 @@ CNode::CNode(Player _mGrid[3][3], Player _pPlayerTurn, Vect2 _vturnPosition)
 
 
 		
-
+		// Gets Heuristic for non-leaf node
 		// Max
-		if (NextTurn == O)
+		if (m_pPlayerTurn == O)
 		{
 			m_iNodeHeuristic = -INFINITY;
 
@@ -156,7 +156,7 @@ char CNode::PlayerEnumToChar(Player _pEnum)
 	return ' ';
 }
 
-Player CNode::checkGameOver()
+Winner CNode::checkGameOver()
 {
 
 	// iterates through all columns and rows
@@ -165,22 +165,22 @@ Player CNode::checkGameOver()
 
 		if ((m_pGrid[i][0] == X and m_pGrid[i][1] == X and m_pGrid[i][2] == X) or (m_pGrid[0][i] == X and m_pGrid[1][i] == X and m_pGrid[2][i] == X))
 		{
-			return X;
+			return X_Winner;
 		}
 		else if ((m_pGrid[i][0] == O and m_pGrid[i][1] == O and m_pGrid[i][2] == O) or (m_pGrid[0][i] == O and m_pGrid[1][i] == O and m_pGrid[2][i] == O))
 		{
-			return O;
+			return O_Winner;
 		}
 	}
 
 	// Checks for Diagonals 
 	if ((m_pGrid[0][2] == X and m_pGrid[1][1] == X and m_pGrid[2][0] == X) or (m_pGrid[0][0] == X and m_pGrid[1][1] == X and m_pGrid[2][2] == X))
 	{
-		return X;
+		return X_Winner;
 	}
 	else if ((m_pGrid[0][2] == O and m_pGrid[1][1] == O and m_pGrid[2][0] == O) or (m_pGrid[0][0] == O and m_pGrid[1][1] == O and m_pGrid[2][2] == O))
 	{
-		return O;
+		return O_Winner;
 	}
 
 
@@ -191,13 +191,13 @@ Player CNode::checkGameOver()
 		{
 			if (m_pGrid[i][j] == Blank)
 			{
-				return null;
+				return None;
 			}
 		}
 	}
 
 
-	// Returns no win
-	return Blank;
+	// Returns Tie
+	return Tie;
 }
 

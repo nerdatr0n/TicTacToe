@@ -32,7 +32,7 @@ private:
 
 	char PlayerEnumToChar(Player _pEnum);
 
-	Player checkGameOver();
+	Winner checkGameOver();
 
 	int m_iNodeHeuristic;
 

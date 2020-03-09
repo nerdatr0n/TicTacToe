@@ -41,7 +41,7 @@ void PlayerVsPlayer(CBoard _board)
 	_board.ResetBoard();
 
 
-	while (_board.GetWinner() == null)
+	while (_board.GetWinner() == None)
 	{
 		DisplayHeader();
 		_board.DisplayBoard();
@@ -90,7 +90,7 @@ void PlayerVsPlayer(CBoard _board)
 	{
 		DisplayHeader();
 		_board.DisplayBoard();
-		cout << endl << "	The winner is " << _board.PlayerEnumToChar(_board.GetWinner()) << endl;
+		cout << endl << "	The winner is " << _board.WinnerEnumToChar(_board.GetWinner()) << endl;
 		cout << endl << "	Press enter to continue " << endl;
 	}
 
@@ -110,7 +110,7 @@ void PlayerVsAiEasy(CBoard _board)
 	_board.ResetBoard();
 
 
-	while (_board.GetWinner() == null)
+	while (_board.GetWinner() == None)
 	{
 		while (_board.GetTurn() == X)
 		{
@@ -148,7 +148,7 @@ void PlayerVsAiEasy(CBoard _board)
 		}
 
 		// Breaks if the player wins
-		if (_board.GetWinner() != null)
+		if (_board.GetWinner() != None)
 		{
 			break;
 		}
@@ -179,7 +179,7 @@ void PlayerVsAiEasy(CBoard _board)
 	{
 		DisplayHeader();
 		_board.DisplayBoard();
-		cout << endl << "	The winner is " << _board.PlayerEnumToChar(_board.GetWinner()) << endl;
+		cout << endl << "	The winner is " << _board.WinnerEnumToChar(_board.GetWinner()) << endl;
 		cout << endl << "	Press enter to continue " << endl;
 	}
 
@@ -200,7 +200,7 @@ void PlayerVsAiHard(CBoard _board)
 	_board.ResetBoard();
 
 
-	while (_board.GetWinner() == null)
+	while (_board.GetWinner() == None)
 	{
 		// Players turn
 		while (_board.GetTurn() == X)
@@ -239,7 +239,7 @@ void PlayerVsAiHard(CBoard _board)
 		}
 
 		// Breaks if the player wins
-		if (_board.GetWinner() != null)
+		if (_board.GetWinner() != None)
 		{
 			break;
 		}
@@ -247,18 +247,19 @@ void PlayerVsAiHard(CBoard _board)
 		// Ai Turn
 		while (_board.GetTurn() == O)
 		{
-			CMiniMax AI();
+			Player pBoard[3][3];
 
-			AI.GetBestMove()
+			_board.CopyBoard(pBoard);
+			
 
-			GridPosition.x = (rand() % 3);
-			GridPosition.y = (rand() % 3);
-			while (_board.GetSpace(GridPosition) != Blank)
-			{
-				GridPosition.x = (rand() % 3);
-				GridPosition.y = (rand() % 3);
-			}
+			CMiniMax AI(pBoard, O);
+
+			GridPosition = AI.GetBestMove();
+
+
 			_board.HaveTurn(GridPosition);
+
+
 		}
 	}
 
@@ -276,7 +277,7 @@ void PlayerVsAiHard(CBoard _board)
 	{
 		DisplayHeader();
 		_board.DisplayBoard();
-		cout << endl << "	The winner is " << _board.PlayerEnumToChar(_board.GetWinner()) << endl;
+		cout << endl << "	The winner is " << _board.WinnerEnumToChar(_board.GetWinner()) << endl;
 		cout << endl << "	Press enter to continue " << endl;
 	}
 

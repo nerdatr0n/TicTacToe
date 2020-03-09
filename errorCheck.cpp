@@ -128,6 +128,7 @@ bool CheckEdgeAmountErrors(string _strEdgeAmount)
 
 }
 
+
 bool CheckStringCoords(string _strCoords)
 {
 	// removes spaces
