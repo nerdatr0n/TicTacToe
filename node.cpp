@@ -88,7 +88,7 @@ CNode::CNode(Player _mGrid[3][3], Player _pPlayerTurn, Vect2 _vturnPosition)
 		
 		// Gets Heuristic for non-leaf node
 		// Max
-		if (m_pPlayerTurn == O)
+		if (m_pPlayerTurn == X)
 		{
 			m_iNodeHeuristic = -INFINITY;
 
