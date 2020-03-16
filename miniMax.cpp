@@ -6,10 +6,10 @@
 
 CMiniMax::CMiniMax(Player _mGrid[3][3], Player _pPlayerTurn)
 {
+	int m_iNodeHeuristic = 9999;
 
-
-	int m_iAlpha = -INFINITY;
-	int m_iBeta = INFINITY;
+	int m_iAlpha = -9999;
+	int m_iBeta = 9999;
 
 	// Copping the array
 	for (int i = 0; i < 3; ++i)
@@ -40,6 +40,30 @@ CMiniMax::CMiniMax(Player _mGrid[3][3], Player _pPlayerTurn)
 
 					m_pChildNodes.push_back(cNewNode);
 
+
+					if (m_pPlayerTurn == X)
+					{
+						m_iNodeHeuristic = max(m_iNodeHeuristic, cNewNode->GetHeuristic());
+
+						m_iAlpha = max(m_iAlpha, m_iNodeHeuristic);
+
+						if (m_iAlpha >= m_iBeta)
+						{
+							return;
+						}
+					}
+					// Min
+					else
+					{
+						m_iNodeHeuristic = min(m_iNodeHeuristic, cNewNode->GetHeuristic());
+
+						m_iBeta = min(m_iBeta, m_iNodeHeuristic);
+
+						if (m_iAlpha >= m_iBeta)
+						{
+							return;
+						}
+					}
 				}
 			}
 		}
@@ -52,10 +76,10 @@ CMiniMax::CMiniMax(Player _mGrid[3][3], Player _pPlayerTurn)
 
 CMiniMax::~CMiniMax()
 {
-	//for (int i = 0; i < static_cast<int>(m_pChildNodes.size()); i++)
-	//{
-	//	delete m_pChildNodes[i];
-	//}
+	for (int i = 0; i < static_cast<int>(m_pChildNodes.size()); i++)
+	{
+		delete m_pChildNodes[i];
+	}
 }
 
 

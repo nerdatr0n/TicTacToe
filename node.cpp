@@ -95,21 +95,28 @@ CNode::CNode(Player _mGrid[3][3], Player _pPlayerTurn, Vect2 _vturnPosition, int
 					// Max
 					if (m_pPlayerTurn == X)
 					{
-						// Gets heuristic from child nodes
-						if (cNewNode->GetHeuristic() > m_iNodeHeuristic)
+						m_iNodeHeuristic = max(m_iNodeHeuristic, cNewNode->GetHeuristic());
+
+						m_iAlpha = max(m_iAlpha, m_iNodeHeuristic);
+						
+						if (m_iAlpha >= m_iBeta)
 						{
-							m_iNodeHeuristic = cNewNode->GetHeuristic();
+							return;
 						}
 					}
 					// Min
 					else
 					{
-						// Gets heuristic from child nodes
-						if (cNewNode->GetHeuristic() < m_iNodeHeuristic)
+						m_iNodeHeuristic = min(m_iNodeHeuristic, cNewNode->GetHeuristic());
+
+						m_iBeta = min(m_iBeta, m_iNodeHeuristic);
+						
+						if (m_iAlpha >= m_iBeta)
 						{
-							m_iNodeHeuristic = cNewNode->GetHeuristic();
+							return;
 						}
 					}
+
 
 				}
 			}
@@ -120,15 +127,33 @@ CNode::CNode(Player _mGrid[3][3], Player _pPlayerTurn, Vect2 _vturnPosition, int
 
 }
 
+
 CNode::~CNode()
 {
-
+	for (int i = 0; i < static_cast<int>(m_pChildNodes.size()); i++)
+	{
+		delete m_pChildNodes[i];
+	}
 }
+
 
 int CNode::GetHeuristic()
 {
 	return m_iNodeHeuristic;
 }
+
+
+int CNode::GetAlpha()
+{
+	return m_iAlpha;
+}
+
+
+int CNode::GetBeta()
+{
+	return m_iBeta;
+}
+
 
 Vect2 CNode::GetTurnPosition()
 {

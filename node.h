@@ -26,6 +26,8 @@ public:
 	~CNode();
 
 	int GetHeuristic();
+	int GetAlpha();
+	int GetBeta();
 	Vect2 GetTurnPosition();
 	
 private:
