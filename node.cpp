@@ -4,7 +4,7 @@
 
 #include "node.h"
 
-CNode::CNode(Player _mGrid[3][3], Player _pPlayerTurn, Vect2 _vturnPosition)
+CNode::CNode(Player _mGrid[3][3], Player _pPlayerTurn, Vect2 _vturnPosition, int _iAlpha, int _iBeta, CNode* _pParent)
 {
 	
 
@@ -17,8 +17,12 @@ CNode::CNode(Player _mGrid[3][3], Player _pPlayerTurn, Vect2 _vturnPosition)
 		}
 	}
 	
+	// Copping the variables
 	m_pPlayerTurn = _pPlayerTurn;
 	m_vturnPosition = _vturnPosition;
+	m_iAlpha = _iAlpha;
+	m_iBeta = _iBeta;
+	m_pParent = _pParent;
 
 
 	// Has turn
@@ -55,10 +59,15 @@ CNode::CNode(Player _mGrid[3][3], Player _pPlayerTurn, Vect2 _vturnPosition)
 		if (m_pPlayerTurn == X)
 		{
 			NextTurn = O;
+
+			// Sets the start heuristic
+			m_iNodeHeuristic = -static_cast<int>(INFINITY);
 		}
 		else
 		{
 			NextTurn = X;
+			// Sets the start heuristic
+			m_iNodeHeuristic = static_cast<int>(INFINITY);
 		}
 
 
@@ -76,49 +85,35 @@ CNode::CNode(Player _mGrid[3][3], Player _pPlayerTurn, Vect2 _vturnPosition)
 					vNewTurn.x = i;
 					vNewTurn.y = j;
 
-					CNode* cNewNode = new CNode(m_pGrid, NextTurn, vNewTurn);
+					CNode* cNewNode = new CNode(m_pGrid, NextTurn, vNewTurn, m_iAlpha, m_iBeta, this);
 
 					m_pChildNodes.push_back(cNewNode);
 
+
+
+					// Gets all the heuristics
+					// Max
+					if (m_pPlayerTurn == X)
+					{
+						// Gets heuristic from child nodes
+						if (cNewNode->GetHeuristic() > m_iNodeHeuristic)
+						{
+							m_iNodeHeuristic = cNewNode->GetHeuristic();
+						}
+					}
+					// Min
+					else
+					{
+						// Gets heuristic from child nodes
+						if (cNewNode->GetHeuristic() < m_iNodeHeuristic)
+						{
+							m_iNodeHeuristic = cNewNode->GetHeuristic();
+						}
+					}
+
 				}
 			}
 		}
-
-
-		
-		// Gets Heuristic for non-leaf node
-		// Max
-		if (m_pPlayerTurn == X)
-		{
-			m_iNodeHeuristic = -INFINITY;
-
-			// Gets heuristic from child nodes
-			for (int i = 0; i < m_pChildNodes.size(); i++) 
-			{
-				if (m_pChildNodes[i]->GetHeuristic() > m_iNodeHeuristic)
-				{
-					m_iNodeHeuristic = m_pChildNodes[i]->GetHeuristic();
-				}
-			}
-
-
-		}
-		// Min
-		else
-		{
-			m_iNodeHeuristic = INFINITY;
-
-			// Gets heuristic from child nodes
-			for (int i = 0; i < m_pChildNodes.size(); i++)
-			{
-				if (m_pChildNodes[i]->GetHeuristic() < m_iNodeHeuristic)
-				{
-					m_iNodeHeuristic = m_pChildNodes[i]->GetHeuristic();
-				}
-			}
-		}
-
-		
 	}
 
 

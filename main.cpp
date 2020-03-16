@@ -168,7 +168,7 @@ void PlayerVsAiEasy(CBoard _board)
 
 
 	// Shows the winner things
-	if (_board.GetWinner() == Blank)
+	if (_board.GetWinner() == Tie)
 	{
 		DisplayHeader();
 		_board.DisplayBoard();
@@ -266,7 +266,7 @@ void PlayerVsAiHard(CBoard _board)
 
 
 	// Shows the winner things
-	if (_board.GetWinner() == Blank)
+	if (_board.GetWinner() == Tie)
 	{
 		DisplayHeader();
 		_board.DisplayBoard();

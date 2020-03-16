@@ -7,6 +7,10 @@
 CMiniMax::CMiniMax(Player _mGrid[3][3], Player _pPlayerTurn)
 {
 
+
+	int m_iAlpha = -INFINITY;
+	int m_iBeta = INFINITY;
+
 	// Copping the array
 	for (int i = 0; i < 3; ++i)
 	{
@@ -32,7 +36,7 @@ CMiniMax::CMiniMax(Player _mGrid[3][3], Player _pPlayerTurn)
 					vNewTurn.x = i;
 					vNewTurn.y = j;
 
-					CNode* cNewNode = new CNode(m_pGrid, _pPlayerTurn, vNewTurn);
+					CNode* cNewNode = new CNode(m_pGrid, _pPlayerTurn, vNewTurn, m_iAlpha, m_iBeta, NULL);
 
 					m_pChildNodes.push_back(cNewNode);
 

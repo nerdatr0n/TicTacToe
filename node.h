@@ -22,7 +22,7 @@ using namespace std;
 class CNode
 {
 public:
-	CNode(Player _mGrid[3][3], Player _pPlayerTurn, Vect2 _vturnPosition);
+	CNode(Player _mGrid[3][3], Player _pPlayerTurn, Vect2 _vturnPosition, int _iAlpha, int _iBeta, CNode* _pParent);
 	~CNode();
 
 	int GetHeuristic();
@@ -34,15 +34,17 @@ private:
 
 	Winner checkGameOver();
 
+
 	int m_iNodeHeuristic;
+	int m_iAlpha;
+	int m_iBeta;
 
 	Player m_pGrid[3][3];
 	
 	Player m_pPlayerTurn;
 	Vect2 m_vturnPosition;
 
-
-
+	CNode* m_pParent;
 	vector<CNode*> m_pChildNodes;
 
 
